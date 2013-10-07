@@ -5,9 +5,9 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from braintree import Customer
-from django_common.http import JsonResponse
-from django_common.helper import form_errors_serialize
-from django_common.decorators import ssl_required
+from common.http import JsonResponse
+from common.helper import form_errors_serialize
+from common.decorators import ssl_required
 
 from django_braintree.forms import UserCCDetailsForm
 from django_braintree.models import UserVault
