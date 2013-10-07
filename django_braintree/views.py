@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from braintree import Customer
-from common.http import JsonResponse
+from common.http import HttpResponseJson
 from common.helper import form_errors_serialize
 from common.decorators import ssl_required
 
@@ -31,11 +31,11 @@ def payments_billing(request, template='django_braintree/payments_billing.html')
             response = form.save()
             if response.is_success:
                 messages.add_message(request, messages.SUCCESS, 'Your credit card information has been securely saved.')
-                return JsonResponse()
+                return HttpResponseJson()
             else:
-                return JsonResponse(success=False, errors=[BAD_CC_ERROR_MSG])
+                return HttpResponseJson(success=False, errors=[BAD_CC_ERROR_MSG])
         
-        return JsonResponse(success=False, data={'form': form_errors_serialize(form)})
+        return HttpResponseJson(success=False, data={'form': form_errors_serialize(form)})
     else:
         if UserVault.objects.is_in_vault(request.user):
             try:
