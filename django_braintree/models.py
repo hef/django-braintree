@@ -2,6 +2,7 @@ import logging
 from decimal import Decimal
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 
 from braintree import Transaction
@@ -32,7 +33,7 @@ class UserVaultManager(models.Manager):
 
 class UserVault(models.Model):
     """Keeping it open that one user can have multiple vault credentials, hence the FK to User and not a OneToOne."""
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, unique=True)
     vault_id = models.CharField(max_length=64, unique=True)
     
     objects = UserVaultManager()
@@ -71,7 +72,7 @@ class PaymentLog(models.Model):
     Captures raw charges made to a users credit card. Extra info related to this payment should be a OneToOneField
     referencing this model.
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     amount = models.DecimalField(max_digits=7, decimal_places=2)
     timestamp = models.DateTimeField(auto_now=True)
     transaction_id = models.CharField(max_length=128)
